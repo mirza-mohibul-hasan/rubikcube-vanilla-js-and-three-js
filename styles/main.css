@@ -1,0 +1,94 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Bungee", cursive;
+}
+
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+main {
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+}
+
+div.btn,
+a.btn {
+  color: #eee;
+  font-size: 1.2em;
+  line-height: 2em;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+div.btn:hover,
+a.btn:hover {
+  color: #bbb;
+}
+
+#shuffle {
+  opacity: 1;
+  font-size: 48px;
+  color: white;
+  padding-bottom: 10%;
+  cursor: pointer;
+}
+
+#shuffle:hover {
+  opacity: 1;
+}
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Bungee", cursive;
+}
+
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+main {
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+}
+
+div.btn,
+a.btn {
+  color: #eee;
+  font-size: 1.2em;
+  line-height: 2em;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+div.btn:hover,
+a.btn:hover {
+  color: #bbb;
+}
+
+#shuffle {
+  opacity: 1;
+  font-size: 48px;
+  color: white;
+  padding-bottom: 10%;
+  cursor: pointer;
+}
+
+#shuffle:hover {
+  opacity: 1;
+}
