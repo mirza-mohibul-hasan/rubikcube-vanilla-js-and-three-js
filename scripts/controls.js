@@ -32,7 +32,7 @@ export const setupControls = (scene, camera, cubes, pivot, controls) => {
     }
 
     if (intersects.length > 0) {
-      controls.enabled = false; // disable OrbitControls
+      controls.enabled = false;
 
       draggable.isDragging = true;
       draggable.mouseX = event.clientX;
@@ -193,23 +193,23 @@ export const setupControls = (scene, camera, cubes, pivot, controls) => {
   return { draggable, pan };
 };
 
-export function doRotation(axis, direction, cube, cubes, pivot, scene) {
+export const doRotation = (axis, direction, cube, cubes, pivot, scene) => {
   for (let i = 0; i < 27; i++) {
     if (Math.abs(cubes[i].position[axis] - cube.position[axis]) < 1) {
       pivot.attach(cubes[i]);
     }
   }
   rotateOnAxis(axis, direction, pivot, scene);
-}
+};
 
-function rotateOnAxis(
+const rotateOnAxis = (
   axis,
   direction,
   pivot,
   scene,
   angle = Math.PI / 2,
   done = 0
-) {
+) => {
   const radStep = Math.PI / 2 / 50;
   if (done >= angle) {
     let len = pivot.children.length;
@@ -239,4 +239,4 @@ function rotateOnAxis(
   requestAnimationFrame(() =>
     rotateOnAxis(axis, direction, pivot, scene, angle, done)
   );
-}
+};
