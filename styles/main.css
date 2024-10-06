@@ -5,17 +5,27 @@ body {
 }
 
 #canvas {
-  position: fixed;
+  display: block;
+  position: absolute;
   top: 0;
   left: 0;
+  width: 100%;
+  height: 90vh; /* Reduced height for space for buttons */
 }
 
 main {
-  position: fixed;
-  width: 100%;
-  z-index: 10;
   display: flex;
   justify-content: center;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 div.btn,
@@ -24,71 +34,13 @@ a.btn {
   font-size: 1.2em;
   line-height: 2em;
   cursor: pointer;
-  margin-left: 10px;
-  margin-right: 10px;
   text-decoration: none;
+  padding: 10px 20px;
+  background-color: #333;
+  border-radius: 5px;
 }
 
 div.btn:hover,
 a.btn:hover {
-  color: #bbb;
-}
-
-#shuffle {
-  opacity: 1;
-  font-size: 48px;
-  color: white;
-  padding-bottom: 10%;
-  cursor: pointer;
-}
-
-#shuffle:hover {
-  opacity: 1;
-}
-body {
-  padding: 0;
-  margin: 0;
-  font-family: "Bungee", cursive;
-}
-
-#canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
-main {
-  position: fixed;
-  width: 100%;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-}
-
-div.btn,
-a.btn {
-  color: #eee;
-  font-size: 1.2em;
-  line-height: 2em;
-  cursor: pointer;
-  margin-left: 10px;
-  margin-right: 10px;
-  text-decoration: none;
-}
-
-div.btn:hover,
-a.btn:hover {
-  color: #bbb;
-}
-
-#shuffle {
-  opacity: 1;
-  font-size: 48px;
-  color: white;
-  padding-bottom: 10%;
-  cursor: pointer;
-}
-
-#shuffle:hover {
-  opacity: 1;
+  background-color: #555;
 }

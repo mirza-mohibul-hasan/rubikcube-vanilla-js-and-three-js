@@ -13,7 +13,7 @@ const cubes = createCubes(scene, pivot);
 const { draggable, pan } = setupControls(scene, camera, cubes, pivot, controls);
 
 // New Scramble logic
-document.getElementById("scramble").addEventListener("click", async () => {
+document.getElementById("shuffle").addEventListener("click", async () => {
   let axes = ["x", "y", "z"];
   for (let i = 0; i < 20; i++) {
     // Pick a random axis for rotation
