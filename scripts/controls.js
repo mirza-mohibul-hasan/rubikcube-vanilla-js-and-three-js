@@ -32,14 +32,12 @@ export const setupControls = (scene, camera, cubes, pivot, controls) => {
     }
 
     if (intersects.length > 0) {
-      controls.enabled = false;
-
+      controls.enabled = false; // Disable OrbitControls while dragging
       draggable.isDragging = true;
       draggable.mouseX = event.clientX;
       draggable.mouseY = event.clientY;
 
       draggable.cube = intersects[0].object;
-
       const intersectPoint = new THREE.Vector3(
         ...intersects[0].point.toArray().map((c) => +c.toFixed(3))
       );
@@ -61,13 +59,9 @@ export const setupControls = (scene, camera, cubes, pivot, controls) => {
     }
   };
 
-  const onMouseUp = () => {
-    draggable.isDragging = false;
-    pan.isPanning = false;
-  };
-
   const onMouseMove = (event) => {
     if (draggable.isDragging) {
+      // Rotation logic based on mouse movement
       if (
         event.clientY > draggable.mouseY + 50 ||
         event.clientY < draggable.mouseY - 50
@@ -186,19 +180,27 @@ export const setupControls = (scene, camera, cubes, pivot, controls) => {
     }
   };
 
+  const onMouseUp = () => {
+    draggable.isDragging = false;
+    pan.isPanning = false;
+  };
+
   window.addEventListener("pointerdown", onMouseDown);
-  window.addEventListener("pointermove", onMouseMove);
+  window.addEventListener("pointermove", onMouseMove); // Attach onMouseMove here
   window.addEventListener("pointerup", onMouseUp);
 
   return { draggable, pan };
 };
 
 export const doRotation = (axis, direction, cube, cubes, pivot, scene) => {
-  for (let i = 0; i < 27; i++) {
-    if (Math.abs(cubes[i].position[axis] - cube.position[axis]) < 1) {
+  // Attach all cubes along the same axis to the pivot
+  for (let i = 0; i < cubes.length; i++) {
+    if (Math.abs(cubes[i].position[axis] - cube.position[axis]) < 0.01) {
       pivot.attach(cubes[i]);
     }
   }
+
+  // Rotate the selected cubes
   rotateOnAxis(axis, direction, pivot, scene);
 };
 
@@ -211,17 +213,20 @@ const rotateOnAxis = (
   done = 0
 ) => {
   const radStep = Math.PI / 2 / 50;
+
+  // Once rotation is complete, detach cubes from pivot and reattach to scene
   if (done >= angle) {
     let len = pivot.children.length;
     for (let i = 0; i < len; i++) {
-      scene.attach(pivot.children[0]);
+      scene.attach(pivot.children[0]); // Reattach cubes to the scene
     }
 
+    // Reset the pivot's rotation after detaching cubes
     pivot.rotation.set(0, 0, 0);
-
     return;
   }
 
+  // Incrementally rotate the pivot on the given axis
   done += radStep;
 
   switch (axis) {
@@ -236,6 +241,7 @@ const rotateOnAxis = (
       break;
   }
 
+  // Continue the rotation in the next animation frame
   requestAnimationFrame(() =>
     rotateOnAxis(axis, direction, pivot, scene, angle, done)
   );
