@@ -41,3 +41,21 @@ function createCubes() {
 }
 
 createCubes();
+document.getElementById("scramble").addEventListener("click", async () => {
+  const axisOptions = ["x", "y", "z"];
+  const scrambleMoves = 15;
+
+  for (let i = 0; i < scrambleMoves; i++) {
+    const axis = axisOptions[Math.floor(Math.random() * 3)];
+    const direction = Math.round(Math.random()) * 2 - 1;
+    const cube = Math.floor(Math.random() * 27);
+
+    doRotation(axis, direction, cubes[cube]);
+
+    await new Promise((r) => setTimeout(r, 500));
+  }
+});
+
+function doRotation(axis, direction, cube) {
+  cube.rotation[axis] += (direction * Math.PI) / 2;
+}
