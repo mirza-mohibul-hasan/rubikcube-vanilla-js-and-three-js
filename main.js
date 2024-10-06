@@ -10,7 +10,7 @@ scene.add(pivot);
 
 const cubes = createCubes(scene, pivot);
 
-const { draggable, pan } = setupControls(scene, camera, cubes, pivot, controls); // pass controls here
+const { draggable, pan } = setupControls(scene, camera, cubes, pivot, controls);
 
 document.getElementById("scramble").addEventListener("click", async () => {
   let arr = ["x", "y", "z"];
@@ -19,7 +19,7 @@ document.getElementById("scramble").addEventListener("click", async () => {
     let direction = Math.round(Math.random()) * 2 - 1;
     let cube = Math.floor(Math.random() * 27);
 
-    doRotation(axis, direction, cubes[cube]);
+    doRotation(axis, direction, cubes[cube], cubes, pivot, scene); // Pass cubes, pivot, and scene
 
     await new Promise((r) => setTimeout(r, 500));
   }

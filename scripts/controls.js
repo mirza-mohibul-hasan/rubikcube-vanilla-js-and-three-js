@@ -1,4 +1,5 @@
 import * as THREE from "three";
+
 export const setupControls = (scene, camera, cubes, pivot, controls) => {
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
@@ -75,14 +76,20 @@ export const setupControls = (scene, camera, cubes, pivot, controls) => {
           doRotation(
             "z",
             Math.sign(event.clientY - draggable.mouseY) * -1,
-            draggable.cube
+            draggable.cube,
+            cubes,
+            pivot,
+            scene
           );
           draggable.isDragging = false;
         } else if (draggable.direction == "front") {
           doRotation(
             "x",
             Math.sign(event.clientY - draggable.mouseY),
-            draggable.cube
+            draggable.cube,
+            cubes,
+            pivot,
+            scene
           );
           draggable.isDragging = false;
         }
@@ -96,14 +103,20 @@ export const setupControls = (scene, camera, cubes, pivot, controls) => {
           doRotation(
             "x",
             Math.sign(event.clientX - draggable.mouseX) * -1,
-            draggable.cube
+            draggable.cube,
+            cubes,
+            pivot,
+            scene
           );
           draggable.isDragging = false;
         } else {
           doRotation(
             "y",
             Math.sign(event.clientX - draggable.mouseX),
-            draggable.cube
+            draggable.cube,
+            cubes,
+            pivot,
+            scene
           );
           draggable.isDragging = false;
         }
@@ -117,14 +130,20 @@ export const setupControls = (scene, camera, cubes, pivot, controls) => {
           doRotation(
             "z",
             Math.sign(event.clientX - draggable.mouseX) * -1,
-            draggable.cube
+            draggable.cube,
+            cubes,
+            pivot,
+            scene
           );
           draggable.isDragging = false;
         } else {
           doRotation(
             "y",
             Math.sign(event.clientY - draggable.mouseY),
-            draggable.cube
+            draggable.cube,
+            cubes,
+            pivot,
+            scene
           );
           draggable.isDragging = false;
         }
@@ -135,7 +154,7 @@ export const setupControls = (scene, camera, cubes, pivot, controls) => {
           pivot.attach(cubes[i]);
         }
 
-        rotateOnAxis("y", Math.sign(event.clientX - pan.mouseX));
+        rotateOnAxis("y", Math.sign(event.clientX - pan.mouseX), pivot, scene);
 
         pan.isPanning = false;
       } else if (
@@ -147,9 +166,19 @@ export const setupControls = (scene, camera, cubes, pivot, controls) => {
         }
 
         if (event.clientX > window.innerWidth / 2) {
-          rotateOnAxis("z", Math.sign(event.clientY - pan.mouseY) * -1);
+          rotateOnAxis(
+            "z",
+            Math.sign(event.clientY - pan.mouseY) * -1,
+            pivot,
+            scene
+          );
         } else {
-          rotateOnAxis("x", Math.sign(event.clientY - pan.mouseY));
+          rotateOnAxis(
+            "x",
+            Math.sign(event.clientY - pan.mouseY),
+            pivot,
+            scene
+          );
         }
 
         pan.isPanning = false;
@@ -157,55 +186,57 @@ export const setupControls = (scene, camera, cubes, pivot, controls) => {
     }
   };
 
-  function doRotation(axis, direction, cube) {
-    for (let i = 0; i < 27; i++) {
-      if (Math.abs(cubes[i].position[axis] - cube.position[axis]) < 1) {
-        pivot.attach(cubes[i]);
-      }
-    }
-    rotateOnAxis(axis, direction);
-  }
-
-  function rotateOnAxis(axis, direction, angle = Math.PI / 2, done = 0) {
-    if (done >= angle) {
-      let len = pivot.children.length;
-      for (let i = 0; i < len; i++) {
-        scene.attach(pivot.children[0]);
-      }
-
-      pivot.rotation.set(0, 0, 0);
-
-      return;
-    }
-
-    done += radStep;
-
-    switch (axis) {
-      case "x":
-        pivot.rotateX(radStep * direction);
-        break;
-      case "y":
-        pivot.rotateY(radStep * direction);
-        break;
-      case "z":
-        pivot.rotateZ(radStep * direction);
-        break;
-    }
-
-    requestAnimationFrame(() => rotateOnAxis(axis, direction, angle, done));
-  }
-
   window.addEventListener("pointerdown", onMouseDown);
   window.addEventListener("pointermove", onMouseMove);
   window.addEventListener("pointerup", onMouseUp);
 
   return { draggable, pan };
 };
-export function doRotation(axis, direction, cube) {
+
+export function doRotation(axis, direction, cube, cubes, pivot, scene) {
   for (let i = 0; i < 27; i++) {
     if (Math.abs(cubes[i].position[axis] - cube.position[axis]) < 1) {
       pivot.attach(cubes[i]);
     }
   }
-  rotateOnAxis(axis, direction);
+  rotateOnAxis(axis, direction, pivot, scene);
+}
+
+function rotateOnAxis(
+  axis,
+  direction,
+  pivot,
+  scene,
+  angle = Math.PI / 2,
+  done = 0
+) {
+  const radStep = Math.PI / 2 / 50;
+  if (done >= angle) {
+    let len = pivot.children.length;
+    for (let i = 0; i < len; i++) {
+      scene.attach(pivot.children[0]);
+    }
+
+    pivot.rotation.set(0, 0, 0);
+
+    return;
+  }
+
+  done += radStep;
+
+  switch (axis) {
+    case "x":
+      pivot.rotateX(radStep * direction);
+      break;
+    case "y":
+      pivot.rotateY(radStep * direction);
+      break;
+    case "z":
+      pivot.rotateZ(radStep * direction);
+      break;
+  }
+
+  requestAnimationFrame(() =>
+    rotateOnAxis(axis, direction, pivot, scene, angle, done)
+  );
 }
