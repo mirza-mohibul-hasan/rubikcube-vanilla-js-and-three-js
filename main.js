@@ -9,6 +9,19 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+animate();
+
 camera.position.set(10, 8, 10);
 
 const renderer = new THREE.WebGLRenderer({
